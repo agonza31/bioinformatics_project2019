@@ -15,7 +15,7 @@ cat ./ref_sequences/hsp70gene_*.fasta > hsp70gene.fasta
 ./hmmer/bin/hmmbuild hsp70geneHMM hsp70geneAlign.fasta
 
 #4)hmmsearch: find and match:
-for file in bioinformatics_project2019/proteomes/proteome_*.fasta
+for file in ./proteomes/proteome_*.fasta
 do
   name=$(echo $file | cut -d '/' -f 3 | cut -d '.' -f 1)
   ./hmmer/bin/hmmsearch --tblout $name"_mcrA" mcrAgeneHMM $file
