@@ -1,10 +1,10 @@
 #Usage: bash test.sh
 
 #1) Put all the mcrA gene files into one single file:
-cat bioinformatics_project2019/ref_sequences/mcrAgene_*.fasta >> mcrAgene.fasta
+cat ./ref_sequences/mcrAgene_*.fasta > mcrAgene.fasta
 
 #Put all the HSP gene files into one single file:
-cat bioinformatics_project2019/ref_sequences/hsp70gene_*.fasta >> hsp70gene.fasta
+cat ./ref_sequences/hsp70gene_*.fasta > hsp70gene.fasta
 
 #2) use Muscle to make alignment of those genes:
 ./muscle -in mcrAgene.fasta -out mcrAgeneAlign.fasta
@@ -23,15 +23,15 @@ do
 done
 
 #5)Create table of outputs
-echo -e "Proteome name\t\tHas mcrA gene? (1 = yes, 0 = no)\t\tNumber of hsp70 gene matches" > proteomeMatch.txt
+echo -e "Proteome name\t\tHas mcrA gene? (1 or more = yes, 0 = no)\tNumber of hsp70 gene matches" > proteomeMatch.txt
 for file in proteome_*_hsp70
 do
   name=$(echo $file | cut -d '_' -f1,2)
   mcrA=$(grep -c "WP_" $name"_mcrA")
   hsp70=$(grep -c "WP_" $file)
-  echo -e "$name\t\t$mcrA\t\t\t$hsp70" >> proteomeMatch.txt
+  echo -e "$name\t\t$mcrA\t\t\t\t\t\t$hsp70" >> proteomeMatch.txt
 done
 
 
 #6)Create text file with candidate pH-resistant methanogens
-grep -P "\t0" -v proteomeMatch.txt | sort -t\t -k3 >> candidate_proteomes.txt
+grep -P "\t0" -v proteomeMatch.txt | sort -t\t -k3 > candidate_proteomes.txt
