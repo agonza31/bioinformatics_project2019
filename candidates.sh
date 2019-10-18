@@ -23,15 +23,16 @@ do
 done
 
 #5)Create table of outputs
-echo -e "Proteome name\t\tHas mcrA gene? (1 or more = yes, 0 = no)\tNumber of hsp70 gene matches" > proteomeMatch.txt
+echo -e "Proteome ID\tmcrA\thsp70" > proteomeMatch.txt
 for file in proteome_*_hsp70
 do
-  name=$(echo $file | cut -d '_' -f1,2)
-  mcrA=$(grep -c "WP_" $name"_mcrA")
-  hsp70=$(grep -c "WP_" $file)
-  echo -e "$name\t\t$mcrA\t\t\t\t\t\t$hsp70" >> proteomeMatch.txt
+  name=$(echo $file | cut -d '_' -f1,2) #Name of proteome (ex. Proteome_01)
+  mcrA=$(grep -c "WP_" $name"_mcrA") #Number of mcrA hits
+  hsp70=$(grep -c "WP_" $file) #Number of hsp70 hits
+  echo -e "$name\t$mcrA\t$hsp70" >> proteomeMatch.txt
 done
 
 
 #6)Create text file with candidate pH-resistant methanogens
-grep -P "\t0" -v proteomeMatch.txt | sort -t\t -k3 > candidate_proteomes.txt
+echo -e "Proteome ID\tmcrA\thsp70" > candidate_proteomes.txt
+grep -P "\t0" -v proteomeMatch.txt | sort -k3nr | head -n -1 >> candidate_proteomes.txt #Proteomes sorted by # of hsp70 hits. More hsp70 hits = better candidate.
